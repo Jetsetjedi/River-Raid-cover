@@ -171,6 +171,20 @@ def opned():
         if (e.type == KEYDOWN) and e.key == K_F2:
             restart()
             game = True
+        # Reiniciar com Enter quando o jogo acabou
+        if (e.type == KEYDOWN) and e.key == K_RETURN and (not game or vidas <= 0):
+            restart()
+            game = True
+        # Clique do mouse no botão de reiniciar (também quando vidas acabaram)
+        if e.type == MOUSEBUTTONDOWN and (not game or vidas <= 0):
+            mx, my = e.pos
+            btn_w = 300
+            btn_h = 60
+            btn_x = width // 2 - btn_w // 2
+            btn_y = screen_height // 2 - btn_h // 2
+            if btn_x <= mx <= btn_x + btn_w and btn_y <= my <= btn_y + btn_h:
+                restart()
+                game = True
         if base.y == 238 and game and intro and (e.type == KEYDOWN):
             intro = False
             voo1.play(-1)
@@ -493,7 +507,6 @@ def lands():
 
 
 def paint():
-    pygame.display.update()
     # Rio
     if pontes[2].t_expl % 2:
         win.fill(cor[8])
@@ -529,12 +542,63 @@ def paint():
 
     textos()
 
+    # Botão "Reiniciar Jogo" quando o jogo estiver encerrado (visível após game end ou vidas zeradas)
+    # OBS: desenhamos em cima de tudo para garantir visibilidade
+    if not game or vidas <= 0:
+        btn_w = 340
+        btn_h = 72
+        btn_x = width // 2 - btn_w // 2
+        btn_y = screen_height // 2 - btn_h // 2
+
+        # helpers
+        def hex2rgb(c):
+            return ((c >> 16) & 255, (c >> 8) & 255, c & 255)
+
+        mx, my = pygame.mouse.get_pos()
+        hovered = (btn_x <= mx <= btn_x + btn_w) and (btn_y <= my <= btn_y + btn_h)
+        pressed = pygame.mouse.get_pressed()[0] and hovered
+
+        # overlay escuro local para destacar o botão
+        overlay = pygame.Surface((btn_w + 24, btn_h + 24), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 140))
+        win.blit(overlay, (btn_x - 12, btn_y - 12))
+
+        # cores (fill e border)
+        normal_fill = hex2rgb(cor[1])  # amarelo brilhante
+        hover_fill = hex2rgb(cor[13])  # vermelho
+        border_color = hex2rgb(cor[7])
+
+        # efeito pressionado: escurece um pouco
+        def darken(col, amt=0.7):
+            return (int(col[0] * amt), int(col[1] * amt), int(col[2] * amt))
+
+        if pressed:
+            fill = darken(hover_fill)
+        else:
+            fill = hover_fill if hovered else normal_fill
+
+        # botão
+        pygame.draw.rect(win, fill, [btn_x, btn_y, btn_w, btn_h], border_radius=8)
+        pygame.draw.rect(win, border_color, [btn_x, btn_y, btn_w, btn_h], 4, border_radius=8)
+
+        # label com sombra
+        font_b = pygame.font.SysFont("arial", 34, bold=True)
+        label = "Reiniciar Jogo"
+        txt_shadow = font_b.render(label, True, (0, 0, 0))
+        txt = font_b.render(label, True, (255, 255, 255))
+        text_x = btn_x + (btn_w - txt.get_width()) // 2
+        text_y = btn_y + (btn_h - txt.get_height()) // 2
+        win.blit(txt_shadow, (text_x + 2, text_y + 2))
+        win.blit(txt, (text_x, text_y))
+
     # Reinicia Terras Base e Ilhas
     if ilha[2].y > screen_height:
         base.y = -400
         for i in range(3):
             terra[i].forma = random.randint(0, 7)
             ilha[i].forma = random.randint(0, 13)
+    # atualiza a tela após tudo desenhado
+    pygame.display.update()
 
 
 def textos():

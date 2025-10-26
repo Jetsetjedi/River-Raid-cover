@@ -41,37 +41,61 @@ Evite colidir com obstáculos e inimigos, e colete combustível para continuar v
 │   ├── gaz_alert.wav
 │   ├── ...
 └── [REDAME.md](http://_vscodecontentref_/7)         # Este arquivo   
+# River Raid - Cover (Python / Pygame)
 
-🚀 Funcionalidades
-Controle do avião com movimentação fluida.
-Sistema de colisão com inimigos e obstáculos.
-Gerenciamento de combustível.
-Sons imersivos para tiros, explosões e alertas de combustível.
+Clone / cover do clássico River Raid implementado em Python com Pygame.
 
-🖼️ Capturas de Tela
+## Descrição
+Você controla um avião, deve desviar de obstáculos, destruir inimigos e gerenciar combustível para sobreviver o máximo possível.
 
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
+## Dependências
+- Python 3.8+
+- pygame
 
-🤝 Contribuindo
-Contribuições são bem-vindas! Siga os passos abaixo para contribuir:
+Instalação rápida (Windows PowerShell):
 
-1. Faça um fork do repositório.
+```powershell
+python -m venv venv
+venv\Scripts\activate
+pip install pygame
+```
 
-2. Crie uma branch para sua feature ou correção:
-   git checkout -b minha-feature
+## Como executar
+Na pasta do projeto (onde está `RiverRaid.py`):
 
-3. Faça commit das suas alterações:
-   git commit -m "Adicionei uma nova feature"
+```powershell
+python RiverRaid.py
+```
 
-4. Envie para o seu fork:
-   git push origin minha-feature
-5.Abra um Pull Request.
+## Controles
+- Seta Esquerda: mover avião para a esquerda
+- Seta Direita: mover avião para a direita
+- Seta Cima: acelerar (aumenta velocidade do mapa)
+- Seta Baixo: reduzir velocidade
+- Espaço: atirar
+- F2: reiniciar / começar o jogo (também há botão reiniciar quando o jogo acabar)
+- ESC: sair
+- Clique do mouse (botão esquerdo): clicar no botão "Reiniciar Jogo" que aparece no centro da tela quando a partida termina
 
+Observação: ao terminar a partida (`game == False`) o botão "Reiniciar Jogo" aparece no centro do mapa. Passe o mouse sobre o botão para ver o efeito de hover e clique para reiniciar.
 
-📜 Licença
-Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+## Estrutura do projeto
+- `RiverRaid.py` - arquivo principal do jogo
+- `obj.py` - definição de objetos (aviões, inimigos, explosões)
+- `place.py` - terrenos e base
+- `shot.py` - lógica do tiro
+- `cores.py` - paleta de cores utilizada
+- `sons/` - pasta com os efeitos sonoros
 
-Desenvolvido com ❤️ por Jether Feliciano. Conecte-se comigo no LinkedIn!
-https://www.linkedin.com/in/jetherfeliciano/
+## Observações e dicas
+- Se o avião não aparecer ao abrir o jogo, pressione `F2` ou espere a tela mostrar o botão de reinício e clique nele.
+- Para desenvolver: mantenha o Pygame atualizado e use um ambiente virtual para evitar conflitos.
+
+## Como contribuir
+1. Faça um fork
+2. Crie uma branch: `git checkout -b minha-feature`
+3. Commit e push
+4. Abra um Pull Request
+
+---
+Feito com carinho para brincar com o clássico River Raid. Boa diversão! :)
