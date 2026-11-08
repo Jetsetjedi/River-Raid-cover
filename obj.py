@@ -13,6 +13,8 @@ class Obj:
         self.win = win
         self.t_expl = t_expl
         self.cor = cores.cor
+        self.decoy = False
+        self.hide = False
         self.mp = [[[0, 0, 0, 1, 0, 0, 0],  # 0 plane
                     [0, 0, 0, 1, 0, 0, 0],
                     [0, 0, 0, 1, 0, 0, 0],
@@ -199,6 +201,8 @@ class Obj:
                     [0,   0,  0,  0,  0, 16,  0, 0]]]
 
     def show(self):
+        if self.hide and not self.t_expl:
+            return
         obj = self.ty
         if self.t_expl > 20:
             obj = 12
